@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Checkout - Rainy Days</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    
+    <!-- Top Banner -->
+    <div class="top-banner">
+        <div class="banner-content">
+            <span>No matter the weather, free shipping on orders over 1,300 NOK.</span>
+            <div class="banner-icon"><i class="fas fa-globe"></i></div>
+        </div>
+    </div>
+
+    <!-- Main Header -->
+    <header>
+        <nav>
+            <div class="logo">
+                <a href="../index.html">
+                    <img src="/images/Logo-RainyDays.png" alt="Rainy Days" class="logo-img">
+                </a>
+            </div>
+            
+            <!-- Main Navigation -->
+            <ul class="main-nav">
+                <li><a href="#women">WOMEN</a></li>
+                <li><a href="#men">MEN</a></li>
+                <li><a href="#outlet">OUTLET</a></li>
+                <li><a href="#activity">ACTIVITY</a></li>
+            </ul>
+            
+            <!-- Right Side Icons -->
+            <div class="header-icons">
+                <div class="search-icon"><i class="fas fa-search"></i></div>
+                <div class="account-icon"><i class="fas fa-user"></i></div>
+                <div class="wishlist-icon"><i class="far fa-heart"></i></div>
+                <div class="cart-icon" onclick="showCart()">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span id="cart-count">0</span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1>Checkout</h1>
+            
+            <div class="checkout-container">
+                <!-- Cart Summary -->
+                <div class="cart-summary">
+                    <h2>Order Summary</h2>
+                    <div id="checkout-items" class="checkout-items">
+                        <!-- Cart items will be loaded here -->
+                    </div>
+                    <div class="order-total">
+                        <div id="order-subtotal"></div>
+                        <div id="order-shipping">Shipping: Free</div>
+                        <div id="order-total" class="total"></div>
+                    </div>
+                </div>
+
+                <!-- Checkout Form -->
+                <div class="checkout-form">
+                    <h2>Billing Information</h2>
+                    <form id="checkout-form">
+                        <div class="form-group">
+                            <label for="full-name">Full Name *</label>
+                            <input type="text" id="full-name" name="fullName" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="address">Address *</label>
+                            <input type="text" id="address" name="address" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="city">City *</label>
+                                <input type="text" id="city" name="city" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="postal-code">Postal Code *</label>
+                                <input type="text" id="postal-code" name="postalCode" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="country">Country *</label>
+                            <select id="country" name="country" required>
+                                <option value="">Select Country</option>
+                                <option value="norway">Norway</option>
+                                <option value="sweden">Sweden</option>
+                                <option value="denmark">Denmark</option>
+                                <option value="finland">Finland</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <h3>Payment Method</h3>
+                        <div class="payment-methods">
+                            <div class="payment-option">
+                                <input type="radio" id="credit-card" name="payment" value="credit-card" checked>
+                                <label for="credit-card">Credit Card</label>
+                            </div>
+                            <div class="payment-option">
+                                <input type="radio" id="paypal" name="payment" value="paypal">
+                                <label for="paypal">PayPal</label>
+                            </div>
+                            <div class="payment-option">
+                                <input type="radio" id="bank-transfer" name="payment" value="bank-transfer">
+                                <label for="bank-transfer">Bank Transfer</label>
+                            </div>
+                        </div>
+
+                        <div id="credit-card-fields" class="credit-card-fields">
+                            <div class="form-group">
+                                <label for="card-number">Card Number *</label>
+                                <input type="text" id="card-number" name="cardNumber" placeholder="1234 5678 9012 3456">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="expiry-date">Expiry Date *</label>
+                                    <input type="text" id="expiry-date" name="expiryDate" placeholder="MM/YY">
+                                </div>
+                                <div class="form-group">
+                                    <label for="cvv">CVV *</label>
+                                    <input type="text" id="cvv" name="cvv" placeholder="123">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <a href="../index.html" class="btn btn-secondary">Continue Shopping</a>
+                            <button type="submit" class="btn btn-primary">Complete Order</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Rainy Days. All rights reserved.</p>
+    </footer>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/cart.js"></script>
+    <script src="../js/checkout.js"></script>
+</body>
+</html>

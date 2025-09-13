@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Order Confirmation - Rainy Days</title>
+    <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+    <!-- Top Banner -->
+    <div class="top-banner">
+        <div class="banner-content">
+            <span>No matter the weather, free shipping on orders over 1,300 NOK.</span>
+            <div class="banner-icon"><i class="fas fa-globe"></i></div>
+        </div>
+    </div>
+
+    <!-- Main Header -->
+    <header>
+        <nav>
+            <div class="logo">
+                <a href="../index.html">
+                    <img src="/images/Logo-RainyDays.png" alt="Rainy Days" class="logo-img">
+                </a>
+            </div>
+            
+            <!-- Main Navigation -->
+            <ul class="main-nav">
+                <li><a href="#women">WOMEN</a></li>
+                <li><a href="#men">MEN</a></li>
+                <li><a href="#outlet">OUTLET</a></li>
+                <li><a href="#activity">ACTIVITY</a></li>
+            </ul>
+            
+            <!-- Right Side Icons -->
+            <div class="header-icons">
+                <div class="search-icon"><i class="fas fa-search"></i></div>
+                <div class="account-icon"><i class="fas fa-user"></i></div>
+                <div class="wishlist-icon"><i class="far fa-heart"></i></div>
+                <div class="cart-icon" onclick="showCart()">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span id="cart-count">0</span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="confirmation-content">
+                <div class="success-icon">✓</div>
+                <h1>Thank You for Your Order!</h1>
+                <p class="confirmation-message">
+                    Your order has been successfully placed and is being processed.
+                </p>
+
+                <div class="order-details" id="order-details">
+                    <h2>Order Summary</h2>
+                    <div class="order-number">
+                        <strong>Order Number: </strong><span id="order-number">RD-2024-001</span>
+                    </div>
+                    <div class="order-date">
+                        <strong>Order Date: </strong><span id="order-date"></span>
+                    </div>
+                    
+                    <div class="ordered-items" id="ordered-items">
+                        <!-- Order items will be loaded here -->
+                    </div>
+
+                    <div class="order-total-section">
+                        <div class="total-row">
+                            <span>Subtotal:</span>
+                            <span id="final-subtotal">$0.00</span>
+                        </div>
+                        <div class="total-row">
+                            <span>Shipping:</span>
+                            <span>Free</span>
+                        </div>
+                        <div class="total-row final-total">
+                            <span><strong>Total:</strong></span>
+                            <span id="final-total"><strong>$0.00</strong></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="shipping-info">
+                    <h3>What's Next?</h3>
+                    <ul>
+                        <li>You will receive an email confirmation shortly</li>
+                        <li>Your order will be processed within 1-2 business days</li>
+                        <li>Standard shipping takes 3-5 business days</li>
+                        <li>You'll receive tracking information once your order ships</li>
+                    </ul>
+                </div>
+
+                <div class="customer-info" id="customer-info">
+                    <h3>Delivery Information</h3>
+                    <div id="delivery-address">
+                        <!-- Customer address will be loaded here -->
+                    </div>
+                </div>
+
+                <div class="confirmation-actions">
+                    <a href="../../index.html" class="btn btn-primary">Continue Shopping</a>
+                    <button onclick="window.print()" class="btn btn-secondary">Print Receipt</button>
+                </div>
+
+                <div class="support-info">
+                    <h3>Need Help?</h3>
+                    <p>If you have any questions about your order, please contact our customer service:</p>
+                    <ul>
+                        <li>Email: support@rainydays.com</li>
+                        <li>Phone: +47 123 45 678</li>
+                        <li>Hours: Monday-Friday 9:00-17:00 CET</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Rainy Days. All rights reserved.</p>
+    </footer>
+
+    <script src="../../js/confirmation.js"></script>
+</body>
+</html>

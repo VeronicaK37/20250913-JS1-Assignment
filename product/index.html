@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Product Details - Rainy Days</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <!-- Top Banner -->
+    <div class="top-banner">
+        <div class="banner-content">
+            <span>No matter the weather, free shipping on orders over 1,300 NOK.</span>
+            <div class="banner-icon"><i class="fas fa-globe"></i></div>
+        </div>
+    </div>
+
+    <!-- Main Header -->
+    <header>
+        <nav>
+            <div class="logo">
+                <a href="index.html">
+                    <img src="/images/Logo-RainyDays.png" alt="Rainy Days" class="logo-img">
+                </a>
+            </div>
+            
+            <!-- Main Navigation -->
+            <ul class="main-nav">
+                <li><a href="#women">WOMEN</a></li>
+                <li><a href="#men">MEN</a></li>
+                <li><a href="#outlet">OUTLET</a></li>
+                <li><a href="#activity">ACTIVITY</a></li>
+            </ul>
+            
+            <!-- Right Side Icons -->
+            <div class="header-icons">
+                <div class="search-icon"><i class="fas fa-search"></i></div>
+                <div class="account-icon"><i class="fas fa-user"></i></div>
+                <div class="wishlist-icon"><i class="far fa-heart"></i></div>
+                <div class="cart-icon" onclick="showCart()">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span id="cart-count">0</span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+
+    <main>
+        <div class="container">
+            <a href="../index.html" class="btn btn-secondary">← Back to Products</a>
+            
+            <!-- Loading Indicator -->
+            <div class="loading" id="loading" style="display: none;">
+                <p>Loading product details...</p>
+            </div>
+
+            <!-- Error Message -->
+            <div class="error-message" id="error-message" style="display: none;"></div>
+
+            <!-- Product Details -->
+            <div id="product-details" class="product-details">
+                <!-- Product details will be loaded here via JavaScript -->
+            </div>
+
+            <!-- Related Products -->
+            <section class="related-products" id="related-products" style="display: none;">
+                <h2>You might also like</h2>
+                <div class="products-grid" id="related-grid">
+                    <!-- Related products will be loaded here -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="hideCart()">&times;</span>
+            <h2>Shopping Cart</h2>
+            <div id="cart-items"></div>
+            <div class="cart-total" id="cart-total"></div>
+            <a href="../checkout/index.html" class="btn btn-success">Proceed to Checkout</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Rainy Days. All rights reserved.</p>
+    </footer>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/cart.js"></script>
+    <script src="../js/product.js"></script>
+</body>
+</html>
