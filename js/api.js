@@ -15,17 +15,24 @@ async function fetchProducts() {
           throw new Error('Products not found. Please try again later.');
         } else if (response.status >= 500) {
           throw new Error('Server error. Please try again later.');
+        } else if (response.status === 429) {
+            throw new Error('Too many requests. Please wait a moment and try again.');
         } else {
-          throw new Error('Failed to load products. Please check your connection.');
+            throw new Error(`Unable to load products (Error ${response.status}). Please check your connection and try again.`);
         }
       }
       
       const data = await response.json();
+      // check data format
+      if (!data || !Array.isArray(data.data)) {
+        throw new Error('Invalid product data received. Please refresh the page.');
+    }
+
       return data.data || [];
     } catch (error) {
-      if (error.name === 'TypeError') {
-        throw new Error('Network error. Please check your internet connection.');
-      }
+        if (error.name === 'TypeError' && error.message.includes('fetch')) {
+            throw new Error('Network connection failed. Please check your internet connection and try again.');
+        }
       throw error;
     }
   }
@@ -40,13 +47,23 @@ async function fetchProductById(productId) {
         const response = await fetch(`${API_BASE}/${productId}`);
         
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            if (response.status === 404) {
+                throw new Error('Product not found. It may have been removed or the link is incorrect.');
+            }
+            throw new Error(`Unable to load product details (Error ${response.status}).`);
         }
         
         const data = await response.json();
+
+        if (!data || !data.data) {
+            throw new Error('Invalid product data received.');
+        }
+
         return data.data;
     } catch (error) {
-        console.error('Error fetching product:', error);
+         if (error.name === 'TypeError' && error.message.includes('fetch')) {
+            throw new Error('Network connection failed. Please check your connection.');
+        }
         throw error;
     }
 }

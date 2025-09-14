@@ -18,26 +18,44 @@ async function initProductPage() {
     const productId = getProductIdFromUrl();
     
     if (!productId) {
-        showError('No product ID provided. Redirecting to homepage...');
-        setTimeout(() => {
-            window.location.href = '../index.html';
-        }, 2000);
+        showError('Invalid product link. Please return to the homepage and try again.');
+        showBackToHomeButton();
         return;
     }
     
     showLoading(true);
+    hideError();
     
     try {
         currentProduct = await fetchProductById(productId);
+        
+        if (!currentProduct) {
+            throw new Error('Product data is empty or invalid.');
+        }
+        
         renderProductDetails();
         await loadRelatedProducts();
-        hideError();
         
     } catch (error) {
-        showError('Failed to load product details. Please try again.');
-        console.error('Error loading product:', error);
+        showError(error.message || 'Failed to load product details.');
+        showBackToHomeButton();
+        
     } finally {
         showLoading(false);
+    }
+}
+
+// new addition back to home Button
+function showBackToHomeButton() {
+    const errorElement = document.getElementById('error-message');
+    if (errorElement && !errorElement.querySelector('.back-home-button')) {
+        const backButton = document.createElement('a');
+        backButton.href = '../index.html';
+        backButton.textContent = 'Back to Homepage';
+        backButton.className = 'btn btn-primary back-home-button';
+        backButton.style.marginTop = '1rem';
+        backButton.style.display = 'inline-block';
+        errorElement.appendChild(backButton);
     }
 }
 
@@ -131,10 +149,16 @@ async function loadRelatedProducts() {
         
         if (relatedProducts.length > 0) {
             renderRelatedProducts(relatedProducts);
+        } else {
+            //new addition
+            const relatedSection = document.getElementById('related-products');
+            if (relatedSection) {
+                relatedSection.style.display = 'none';
+            }
         }
         
     } catch (error) {
-        console.error('Error loading related products:', error);
+        console.warn('Error loading related products:', error.message);
     }
 }
 

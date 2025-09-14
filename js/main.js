@@ -8,24 +8,33 @@ let filteredProducts = [];
  */
 async function initHomepage() {
     showLoading(true);
+    hideError(); 
     
     try {
         allProducts = await fetchProducts();
-        filteredProducts = [...allProducts];
         
+        // Check if there is product data
+        if (!allProducts || allProducts.length === 0) {
+            showError('No products available at the moment. Please check back later.');
+            return;
+        }
+        
+        filteredProducts = [...allProducts];
         renderProducts();
         populateFilters();
-        hideError();
         
     } catch (error) {
-        showError('Failed to load products. Please check your internet connection and try again.');
+        // Show specific error message
+        showError(error.message || 'Failed to load products. Please refresh the page or try again later.');
+        showRetryButton();
+        
     } finally {
         showLoading(false);
     }
 }
 
 /**
- * Render products grid
+ * Render products grid with enhanced no-results handling
  */
 function renderProducts() {
     const productsGrid = document.getElementById('products-grid');
@@ -33,7 +42,7 @@ function renderProducts() {
     if (!productsGrid) return;
     
     if (filteredProducts.length === 0) {
-        productsGrid.innerHTML = '<p class="no-products">No products found matching your criteria.</p>';
+        productsGrid.innerHTML = getNoResultsMessage();
         return;
     }
     
@@ -63,6 +72,42 @@ function renderProducts() {
             </div>
         `;
     }).join('');
+}
+
+/**
+ * Generate appropriate no-results message based on current state
+ */
+function getNoResultsMessage() {
+    const searchInput = document.getElementById('search-input');
+    const genderFilter = document.getElementById('gender-filter');
+    
+    const hasSearchTerm = searchInput && searchInput.value.trim();
+    const hasGenderFilter = genderFilter && genderFilter.value;
+    
+    if (hasSearchTerm || hasGenderFilter) {
+        return `
+            <div class="no-results">
+                <div class="no-results-icon">🔍</div>
+                <h3>No products found</h3>
+                <p>We couldn't find any products matching your search criteria.</p>
+                <div class="no-results-actions">
+                    <button onclick="clearFilters()" class="btn btn-secondary">Clear Filters</button>
+                    <button onclick="showAllProducts()" class="btn btn-primary">View All Products</button>
+                </div>
+            </div>
+        `;
+    } else if (allProducts.length === 0) {
+        return `
+            <div class="no-results">
+                <div class="no-results-icon">📦</div>
+                <h3>No products available</h3>
+                <p>We're currently updating our inventory. Please check back soon!</p>
+                <button onclick="initHomepage()" class="btn btn-primary">Refresh</button>
+            </div>
+        `;
+    } else {
+        return '<p class="no-products">No products to display.</p>';
+    }
 }
 
 /**
@@ -107,8 +152,27 @@ function applyFilters() {
 }
 
 /**
+ * Clear all filters and show all products
+ */
+function clearFilters() {
+    const genderFilter = document.getElementById('gender-filter');
+    const searchInput = document.getElementById('search-input');
+    
+    if (genderFilter) genderFilter.value = '';
+    if (searchInput) searchInput.value = '';
+    
+    applyFilters();
+}
+
+/**
+ * Show all products (alias for clearFilters)
+ */
+function showAllProducts() {
+    clearFilters();
+}
+
+/**
  * Handle add to cart button click
- * @param {string} productId - Product ID to add
  */
 async function handleAddToCart(productId) {
     const product = allProducts.find(p => p.id === productId);
@@ -122,8 +186,25 @@ async function handleAddToCart(productId) {
 }
 
 /**
+ * Show retry button for failed API calls
+ */
+function showRetryButton() {
+    const errorElement = document.getElementById('error-message');
+    if (errorElement && !errorElement.querySelector('.retry-button')) {
+        const retryButton = document.createElement('button');
+        retryButton.textContent = 'Retry Loading';
+        retryButton.className = 'btn btn-primary retry-button';
+        retryButton.style.marginTop = '1rem';
+        retryButton.onclick = () => {
+            errorElement.removeChild(retryButton);
+            initHomepage();
+        };
+        errorElement.appendChild(retryButton);
+    }
+}
+
+/**
  * Show loading indicator
- * @param {boolean} show - Whether to show or hide loading
  */
 function showLoading(show) {
     const loadingElement = document.getElementById('loading');
@@ -134,12 +215,19 @@ function showLoading(show) {
 
 /**
  * Show error message
- * @param {string} message - Error message to display
  */
-function showError(message) {
+function showError(message, canRetry = false) {
     const errorElement = document.getElementById('error-message');
     if (errorElement) {
-        errorElement.textContent = message;
+        const messageElement = document.createElement('p');
+        messageElement.textContent = message; // security automatically escape html！！
+        
+        errorElement.innerHTML = `
+            <div class="error-content">
+                <strong>Oops! Something went wrong</strong>
+            </div>
+        `;
+        errorElement.querySelector('.error-content').appendChild(messageElement);
         errorElement.style.display = 'block';
     }
 }
@@ -151,6 +239,7 @@ function hideError() {
     const errorElement = document.getElementById('error-message');
     if (errorElement) {
         errorElement.style.display = 'none';
+        errorElement.innerHTML = '';
     }
 }
 
@@ -167,7 +256,7 @@ function setupEventListeners() {
     }
     
     if (searchInput) {
-        // Debounce search input
+        // Debounce search input for better performance
         let searchTimeout;
         searchInput.addEventListener('input', () => {
             clearTimeout(searchTimeout);
